@@ -10,44 +10,76 @@ import UIKit
 class ViewController: UIViewController {
     
     let grid = UIView()
-    let firstSpace = UIView()
-    let secondSpace = UIView()
-    let thirdSpace = UIView()
-    let fourthSpace = UIView()
-    let fifthSpace = UIView()
-    let sixthSpace = UIView()
-    let seventhSpace = UIView()
-    let eigthSpace = UIView()
-    let ninthSpace = UIView()
-    let tenthSpace = UIView()
-    let eleventhSpace = UIView()
-    let twelfthSpace = UIView()
-    let thirteenthSpace = UIView()
-    let fourteenthSpace = UIView()
-    let fifteenthSpace = UIView()
-    let sixteenthSpace = UIView()
+    let space0_0 = UIView()
+    let space1_0 = UIView()
+    let space2_0 = UIView()
+    let space3_0 = UIView()
+    let space0_1 = UIView()
+    let space1_1 = UIView()
+    let space2_1 = UIView()
+    let space3_1 = UIView()
+    let space0_2 = UIView()
+    let space1_2 = UIView()
+    let space2_2 = UIView()
+    let space3_2 = UIView()
+    let space0_3 = UIView()
+    let space1_3 = UIView()
+    let space2_3 = UIView()
+    let space3_3 = UIView()
     
-    let firstBox = UIView()
-    let secondBox = UIView()
-    let thirdBox = UIView()
-    let fourthBox = UIView()
-    let fifthBox = UIView()
-    let sixthBox = UIView()
-    let seventhBox = UIView()
-    let eigthBox = UIView()
-    let ninthBox = UIView()
-    let tenthBox = UIView()
-    let eleventhBox = UIView()
-    let twelfthBox = UIView()
-    let thirteenthBox = UIView()
-    let fourteenthBox = UIView()
-    let fifteenthBox = UIView()
-    let sixteenthBox = UIView()
+    let box0_0 = UIView()
+    let box1_0 = UIView()
+    let box2_0 = UIView()
+    let box3_0 = UIView()
+    let box0_1 = UIView()
+    let box1_1 = UIView()
+    let box2_1 = UIView()
+    let box3_1 = UIView()
+    let box0_2 = UIView()
+    let box1_2 = UIView()
+    let box2_2 = UIView()
+    let box3_2 = UIView()
+    let box0_3 = UIView()
+    let box1_3 = UIView()
+    let box2_3 = UIView()
+    let box3_3 = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .gray
         setupUI()
+    }
+    
+    
+    func addPanGesture(view: UIView) {
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(ViewController.handlePan(sender:)))
+        view.addGestureRecognizer(pan)
+    }
+    
+    // Refactor
+    @objc func handlePan(sender: UIPanGestureRecognizer) {
+        
+        let box = sender.view!
+        self.view.bringSubviewToFront(box)
+        
+        switch sender.state {
+            
+        case .began, .changed:
+            moveViewWithPan(view: box, sender: sender)
+        case .ended:
+            print("pan ended")
+        default:
+            break
+        }
+    }
+    
+    
+    func moveViewWithPan(view: UIView, sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: view)
+        
+        view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y + translation.y)
+        sender.setTranslation(CGPoint.zero, in: view)
     }
     
     func setupUI() {
@@ -59,22 +91,22 @@ class ViewController: UIViewController {
         let boxColor: UIColor = .blue
         
         let boxes = [
-            (firstBox, firstSpace),
-            (secondBox, secondSpace),
-            (thirdBox, thirdSpace),
-            (fourthBox, fourthSpace),
-            (fifthBox, fifthSpace),
-            (sixthBox, sixthSpace),
-            (seventhBox, seventhSpace),
-            (eigthBox, eigthSpace),
-            (ninthBox, ninthSpace),
-            (tenthBox, tenthSpace),
-            (eleventhBox, eleventhSpace),
-            (twelfthBox, twelfthSpace),
-            (thirteenthBox, thirteenthSpace),
-            (fourteenthBox, fourteenthSpace),
-            (fifteenthBox, fifteenthSpace),
-            (sixteenthBox, sixteenthSpace),
+            (box0_0, space0_0),
+            (box1_0, space1_0),
+            (box2_0, space2_0),
+            (box3_0, space3_0),
+            (box0_1, space0_1),
+            (box1_1, space1_1),
+            (box2_1, space2_1),
+            (box3_1, space3_1),
+            (box0_2, space0_2),
+            (box1_2, space1_2),
+            (box2_2, space2_2),
+            (box3_2, space3_2),
+            (box0_3, space0_3),
+            (box1_3, space1_3),
+            (box2_3, space2_3),
+            (box3_3, space3_3),
         ]
         
         // label each box, and pick a random space to remove
@@ -83,7 +115,10 @@ class ViewController: UIViewController {
         var numbersIndex = 0
         numbers.shuffle()
         for i in 0..<boxes.count {
-            if skipIndex == i { continue }
+            if skipIndex == i {
+                // specify this as the empty box
+                continue
+            }
             let (box, space) = boxes[i]
             box.frame = space.bounds
             box.backgroundColor = boxColor
@@ -97,6 +132,8 @@ class ViewController: UIViewController {
             numberLabel.centerYAnchor.constraint(equalTo: box.centerYAnchor).isActive = true
             numberLabel.text = "\(numbers[numbersIndex])"
             numbersIndex += 1
+            
+            addPanGesture(view: box)
         }
     }
     
@@ -113,87 +150,87 @@ class ViewController: UIViewController {
     
     private func setupAllSpaces() {
         // left, top
-        setupSpace(firstSpace)
-        setupTopRow(firstSpace)
-        setupFarLeftCol(firstSpace)
+        setupSpace(space0_0)
+        setupTopRow(space0_0)
+        setupFarLeftCol(space0_0)
         
         // mid left, top
-        setupSpace(secondSpace)
-        setupTopRow(secondSpace)
-        setupMidLeftCol(secondSpace)
+        setupSpace(space1_0)
+        setupTopRow(space1_0)
+        setupMidLeftCol(space1_0)
         
         // mid right, top
-        setupSpace(thirdSpace)
-        setupTopRow(thirdSpace)
-        setupMidRightCol(thirdSpace)
+        setupSpace(space2_0)
+        setupTopRow(space2_0)
+        setupMidRightCol(space2_0)
         
         // right, top
-        setupSpace(fourthSpace)
-        setupTopRow(fourthSpace)
-        setupFarRightCol(fourthSpace)
+        setupSpace(space3_0)
+        setupTopRow(space3_0)
+        setupFarRightCol(space3_0)
         
         
         // left, mid top
-        setupSpace(fifthSpace)
-        setupMidTopRow(fifthSpace)
-        setupFarLeftCol(fifthSpace)
+        setupSpace(space0_1)
+        setupMidTopRow(space0_1)
+        setupFarLeftCol(space0_1)
         
         // mid left, mid top
-        setupSpace(sixthSpace)
-        setupMidTopRow(sixthSpace)
-        setupMidLeftCol(sixthSpace)
+        setupSpace(space1_1)
+        setupMidTopRow(space1_1)
+        setupMidLeftCol(space1_1)
         
         // mid right, mid top
-        setupSpace(seventhSpace)
-        setupMidTopRow(seventhSpace)
-        setupMidRightCol(seventhSpace)
+        setupSpace(space2_1)
+        setupMidTopRow(space2_1)
+        setupMidRightCol(space2_1)
         
         // right, mid top
-        setupSpace(eigthSpace)
-        setupMidTopRow(eigthSpace)
-        setupFarRightCol(eigthSpace)
+        setupSpace(space3_1)
+        setupMidTopRow(space3_1)
+        setupFarRightCol(space3_1)
         
         
         // left, mid bottom
-        setupSpace(ninthSpace)
-        setupMidBottomRow(ninthSpace)
-        setupFarLeftCol(ninthSpace)
+        setupSpace(space0_2)
+        setupMidBottomRow(space0_2)
+        setupFarLeftCol(space0_2)
         
         // mid left, mid bottom
-        setupSpace(tenthSpace)
-        setupMidBottomRow(tenthSpace)
-        setupMidLeftCol(tenthSpace)
+        setupSpace(space1_2)
+        setupMidBottomRow(space1_2)
+        setupMidLeftCol(space1_2)
         
         // mid right, mid bottom
-        setupSpace(eleventhSpace)
-        setupMidBottomRow(eleventhSpace)
-        setupMidRightCol(eleventhSpace)
+        setupSpace(space2_2)
+        setupMidBottomRow(space2_2)
+        setupMidRightCol(space2_2)
         
         // right, mid bottom
-        setupSpace(twelfthSpace)
-        setupMidBottomRow(twelfthSpace)
-        setupFarRightCol(twelfthSpace)
+        setupSpace(space3_2)
+        setupMidBottomRow(space3_2)
+        setupFarRightCol(space3_2)
         
         
         // left, bottom
-        setupSpace(thirteenthSpace)
-        setupBottomRow(thirteenthSpace)
-        setupFarLeftCol(thirteenthSpace)
+        setupSpace(space0_3)
+        setupBottomRow(space0_3)
+        setupFarLeftCol(space0_3)
         
         // mid left, bottom
-        setupSpace(fourteenthSpace)
-        setupBottomRow(fourteenthSpace)
-        setupMidLeftCol(fourteenthSpace)
+        setupSpace(space1_3)
+        setupBottomRow(space1_3)
+        setupMidLeftCol(space1_3)
         
         // mid right, bottom
-        setupSpace(fifteenthSpace)
-        setupBottomRow(fifteenthSpace)
-        setupMidRightCol(fifteenthSpace)
+        setupSpace(space2_3)
+        setupBottomRow(space2_3)
+        setupMidRightCol(space2_3)
         
         // right, bottom
-        setupSpace(sixteenthSpace)
-        setupBottomRow(sixteenthSpace)
-        setupFarRightCol(sixteenthSpace)
+        setupSpace(space3_3)
+        setupBottomRow(space3_3)
+        setupFarRightCol(space3_3)
     }
     
     
@@ -239,4 +276,3 @@ class ViewController: UIViewController {
         space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: 0).isActive = true
     }
 }
-
