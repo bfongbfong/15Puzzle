@@ -43,66 +43,20 @@ class ViewController: UIViewController {
     let fourteenthBox = UIView()
     let fifteenthBox = UIView()
     let sixteenthBox = UIView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .gray
         setupUI()
     }
     
-    func setupSpace(_ space: UIView) {
-        let emptyGridColor: UIColor = .white
-        let divider: CGFloat = 0.24
-        space.translatesAutoresizingMaskIntoConstraints = false
-        grid.addSubview(space)
-        space.widthAnchor.constraint(equalTo: grid.widthAnchor, multiplier: divider).isActive = true
-        space.heightAnchor.constraint(equalTo: grid.heightAnchor, multiplier: divider).isActive = true
-        space.backgroundColor = emptyGridColor
-    }
-    
-    func setupTopRow(_ space: UIView) {
-        space.topAnchor.constraint(equalTo: grid.topAnchor, constant: 0).isActive = true
-    }
-    
-    func setupMidTopRow(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 0.745, constant: 0.0).isActive = true
-    }
-    
-    func setupMidBottomRow(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 1.255, constant: 0.0).isActive = true
-    }
-    
-    func setupBottomRow(_ space: UIView) {
-        space.bottomAnchor.constraint(equalTo: grid.bottomAnchor, constant: 0).isActive = true
-    }
-    
-    func setupFarLeftCol(_ space: UIView) {
-        space.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: 0).isActive = true
-    }
-    
-    func setupMidLeftCol(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 0.745, constant: 0.0).isActive = true
-    }
-    
-    func setupMidRightCol(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 1.255, constant: 0.0).isActive = true
-    }
-    
-    func setupFarRightCol(_ space: UIView) {
-        space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: 0).isActive = true
-    }
-    
     func setupUI() {
+        setupGrid()
+        setupAllSpaces()
         
-        grid.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(grid)
+        self.view.layoutIfNeeded()
         
-        grid.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        grid.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        grid.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
-        grid.heightAnchor.constraint(equalTo: grid.widthAnchor).isActive = true
-        grid.backgroundColor = .white
-        
+        let boxColor: UIColor = .blue
         
         let boxes = [
             (firstBox, firstSpace),
@@ -123,92 +77,7 @@ class ViewController: UIViewController {
             (sixteenthBox, sixteenthSpace),
         ]
         
-        
-        // left, top
-        setupSpace(firstSpace)
-        setupTopRow(firstSpace)
-        setupFarLeftCol(firstSpace)
-        
-        // mid left, top
-        setupSpace(secondSpace)
-        setupTopRow(secondSpace)
-        setupMidLeftCol(secondSpace)
-        
-        // mid right, top
-        setupSpace(thirdSpace)
-        setupTopRow(thirdSpace)
-        setupMidRightCol(thirdSpace)
-        
-        // right, top
-        setupSpace(fourthSpace)
-        setupTopRow(fourthSpace)
-        setupFarRightCol(fourthSpace)
-        
-        
-        
-        // left, mid top
-        setupSpace(fifthSpace)
-        setupMidTopRow(fifthSpace)
-        setupFarLeftCol(fifthSpace)
-        
-        setupSpace(sixthSpace)
-        setupMidTopRow(sixthSpace)
-        setupMidLeftCol(sixthSpace)
-
-        setupSpace(seventhSpace)
-        setupMidTopRow(seventhSpace)
-        setupMidRightCol(seventhSpace)
-
-        setupSpace(eigthSpace)
-        setupMidTopRow(eigthSpace)
-        setupFarRightCol(eigthSpace)
-
-        
-        
-        // left, mid bottom
-        setupSpace(ninthSpace)
-        setupMidBottomRow(ninthSpace)
-        setupFarLeftCol(ninthSpace)
-
-        setupSpace(tenthSpace)
-        setupMidBottomRow(tenthSpace)
-        setupMidLeftCol(tenthSpace)
-
-        setupSpace(eleventhSpace)
-        setupMidBottomRow(eleventhSpace)
-        setupMidRightCol(eleventhSpace)
-
-        setupSpace(twelfthSpace)
-        setupMidBottomRow(twelfthSpace)
-        setupFarRightCol(twelfthSpace)
-
-        
-        
-        // left, bottom
-        setupSpace(thirteenthSpace)
-        setupBottomRow(thirteenthSpace)
-        setupFarLeftCol(thirteenthSpace)
-
-        setupSpace(fourteenthSpace)
-        setupBottomRow(fourteenthSpace)
-        setupMidLeftCol(fourteenthSpace)
-
-        setupSpace(fifteenthSpace)
-        setupBottomRow(fifteenthSpace)
-        setupMidRightCol(fifteenthSpace)
-
-        setupSpace(sixteenthSpace)
-        setupBottomRow(sixteenthSpace)
-        setupFarRightCol(sixteenthSpace)
-
-        
-        
-        self.view.layoutIfNeeded()
-        
-        let boxColor: UIColor = .blue
-        
-        
-        
+        // label each box, and pick a random space to remove
         let skipIndex = Int.random(in: 0...15)
         var numbers = Array(1...15)
         var numbersIndex = 0
@@ -230,7 +99,144 @@ class ViewController: UIViewController {
             numbersIndex += 1
         }
     }
-
-
+    
+    private func setupGrid() {
+        grid.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(grid)
+        
+        grid.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        grid.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        grid.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
+        grid.heightAnchor.constraint(equalTo: grid.widthAnchor).isActive = true
+        grid.backgroundColor = .white
+    }
+    
+    private func setupAllSpaces() {
+        // left, top
+        setupSpace(firstSpace)
+        setupTopRow(firstSpace)
+        setupFarLeftCol(firstSpace)
+        
+        // mid left, top
+        setupSpace(secondSpace)
+        setupTopRow(secondSpace)
+        setupMidLeftCol(secondSpace)
+        
+        // mid right, top
+        setupSpace(thirdSpace)
+        setupTopRow(thirdSpace)
+        setupMidRightCol(thirdSpace)
+        
+        // right, top
+        setupSpace(fourthSpace)
+        setupTopRow(fourthSpace)
+        setupFarRightCol(fourthSpace)
+        
+        
+        // left, mid top
+        setupSpace(fifthSpace)
+        setupMidTopRow(fifthSpace)
+        setupFarLeftCol(fifthSpace)
+        
+        // mid left, mid top
+        setupSpace(sixthSpace)
+        setupMidTopRow(sixthSpace)
+        setupMidLeftCol(sixthSpace)
+        
+        // mid right, mid top
+        setupSpace(seventhSpace)
+        setupMidTopRow(seventhSpace)
+        setupMidRightCol(seventhSpace)
+        
+        // right, mid top
+        setupSpace(eigthSpace)
+        setupMidTopRow(eigthSpace)
+        setupFarRightCol(eigthSpace)
+        
+        
+        // left, mid bottom
+        setupSpace(ninthSpace)
+        setupMidBottomRow(ninthSpace)
+        setupFarLeftCol(ninthSpace)
+        
+        // mid left, mid bottom
+        setupSpace(tenthSpace)
+        setupMidBottomRow(tenthSpace)
+        setupMidLeftCol(tenthSpace)
+        
+        // mid right, mid bottom
+        setupSpace(eleventhSpace)
+        setupMidBottomRow(eleventhSpace)
+        setupMidRightCol(eleventhSpace)
+        
+        // right, mid bottom
+        setupSpace(twelfthSpace)
+        setupMidBottomRow(twelfthSpace)
+        setupFarRightCol(twelfthSpace)
+        
+        
+        // left, bottom
+        setupSpace(thirteenthSpace)
+        setupBottomRow(thirteenthSpace)
+        setupFarLeftCol(thirteenthSpace)
+        
+        // mid left, bottom
+        setupSpace(fourteenthSpace)
+        setupBottomRow(fourteenthSpace)
+        setupMidLeftCol(fourteenthSpace)
+        
+        // mid right, bottom
+        setupSpace(fifteenthSpace)
+        setupBottomRow(fifteenthSpace)
+        setupMidRightCol(fifteenthSpace)
+        
+        // right, bottom
+        setupSpace(sixteenthSpace)
+        setupBottomRow(sixteenthSpace)
+        setupFarRightCol(sixteenthSpace)
+    }
+    
+    
+    private func setupSpace(_ space: UIView) {
+        let emptyGridColor: UIColor = .white
+        let divider: CGFloat = 0.24
+        space.translatesAutoresizingMaskIntoConstraints = false
+        grid.addSubview(space)
+        space.widthAnchor.constraint(equalTo: grid.widthAnchor, multiplier: divider).isActive = true
+        space.heightAnchor.constraint(equalTo: grid.heightAnchor, multiplier: divider).isActive = true
+        space.backgroundColor = emptyGridColor
+    }
+    
+    private func setupTopRow(_ space: UIView) {
+        space.topAnchor.constraint(equalTo: grid.topAnchor, constant: 0).isActive = true
+    }
+    
+    private func setupMidTopRow(_ space: UIView) {
+        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 0.745, constant: 0.0).isActive = true
+    }
+    
+    private func setupMidBottomRow(_ space: UIView) {
+        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 1.255, constant: 0.0).isActive = true
+    }
+    
+    private func setupBottomRow(_ space: UIView) {
+        space.bottomAnchor.constraint(equalTo: grid.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    private func setupFarLeftCol(_ space: UIView) {
+        space.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: 0).isActive = true
+    }
+    
+    private func setupMidLeftCol(_ space: UIView) {
+        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 0.745, constant: 0.0).isActive = true
+    }
+    
+    private func setupMidRightCol(_ space: UIView) {
+        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 1.255, constant: 0.0).isActive = true
+    }
+    
+    private func setupFarRightCol(_ space: UIView) {
+        space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: 0).isActive = true
+    }
 }
 
