@@ -10,46 +10,20 @@ import UIKit
 class ViewController: UIViewController {
     
     let grid = UIView()
-    let space0_0 = UIView()
-    let space1_0 = UIView()
-    let space2_0 = UIView()
-    let space3_0 = UIView()
-    let space0_1 = UIView()
-    let space1_1 = UIView()
-    let space2_1 = UIView()
-    let space3_1 = UIView()
-    let space0_2 = UIView()
-    let space1_2 = UIView()
-    let space2_2 = UIView()
-    let space3_2 = UIView()
-    let space0_3 = UIView()
-    let space1_3 = UIView()
-    let space2_3 = UIView()
-    let space3_3 = UIView()
+        
+    // the spaces actually look the way i've organized them
+    let space0_0 = UIView(), space1_0 = UIView(), space2_0 = UIView(), space3_0 = UIView(), space0_1 = UIView(), space1_1 = UIView(), space2_1 = UIView(), space3_1 = UIView(), space0_2 = UIView(), space1_2 = UIView(), space2_2 = UIView(), space3_2 = UIView(), space0_3 = UIView(), space1_3 = UIView(), space2_3 = UIView(), space3_3 = UIView()
     
-    let box0_0 = UIView()
-    let box1_0 = UIView()
-    let box2_0 = UIView()
-    let box3_0 = UIView()
-    let box0_1 = UIView()
-    let box1_1 = UIView()
-    let box2_1 = UIView()
-    let box3_1 = UIView()
-    let box0_2 = UIView()
-    let box1_2 = UIView()
-    let box2_2 = UIView()
-    let box3_2 = UIView()
-    let box0_3 = UIView()
-    let box1_3 = UIView()
-    let box2_3 = UIView()
-    let box3_3 = UIView()
+    let box0_0 = UIView(), box1_0 = UIView(), box2_0 = UIView(), box3_0 = UIView(),
+        box0_1 = UIView(), box1_1 = UIView(), box2_1 = UIView(), box3_1 = UIView(),
+        box0_2 = UIView(), box1_2 = UIView(), box2_2 = UIView(), box3_2 = UIView(),
+        box0_3 = UIView(), box1_3 = UIView(), box2_3 = UIView(), box3_3 = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .gray
         setupUI()
     }
-    
     
     func addPanGesture(view: UIView) {
         
