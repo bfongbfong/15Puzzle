@@ -13,102 +13,177 @@ class ViewController: UIViewController {
         
     // the spaces actually look the way i've organized them
     let space0_0 = UIView(), space1_0 = UIView(), space2_0 = UIView(), space3_0 = UIView(), space0_1 = UIView(), space1_1 = UIView(), space2_1 = UIView(), space3_1 = UIView(), space0_2 = UIView(), space1_2 = UIView(), space2_2 = UIView(), space3_2 = UIView(), space0_3 = UIView(), space1_3 = UIView(), space2_3 = UIView(), space3_3 = UIView()
+
+    let box0_0 = Box(), box1_0 = Box(), box2_0 = Box(), box3_0 = Box(),
+        box0_1 = Box(), box1_1 = Box(), box2_1 = Box(), box3_1 = Box(),
+        box0_2 = Box(), box1_2 = Box(), box2_2 = Box(), box3_2 = Box(),
+        box0_3 = Box(), box1_3 = Box(), box2_3 = Box(), box3_3 = Box()
     
-    let box0_0 = UIView(), box1_0 = UIView(), box2_0 = UIView(), box3_0 = UIView(),
-        box0_1 = UIView(), box1_1 = UIView(), box2_1 = UIView(), box3_1 = UIView(),
-        box0_2 = UIView(), box1_2 = UIView(), box2_2 = UIView(), box3_2 = UIView(),
-        box0_3 = UIView(), box1_3 = UIView(), box2_3 = UIView(), box3_3 = UIView()
+    // space, box
+    var spaces_boxes: [[(UIView, Box)]]!
+    
+    var missingBoxCoords: (Int, Int)!
+    
+    let divider: CGFloat = 0.24
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .gray
+        
+        spaces_boxes = [
+            [(space0_0, box0_0), (space1_0, box1_0), (space2_0, box2_0), (space3_0, box3_0)],
+            [(space0_1, box0_1), (space1_1, box1_1), (space2_1, box2_1), (space3_1, box3_1)],
+            [(space0_2, box0_2), (space1_2, box1_2), (space2_2, box2_2), (space3_2, box3_2)],
+            [(space0_3, box0_3), (space1_3, box1_3), (space2_3, box2_3), (space3_3, box3_3)]
+        ]
+        
         setupUI()
+        addGestureRecognizers()
     }
     
-    func addPanGesture(view: UIView) {
+    private func addGestureRecognizers() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeRight.direction = .right
+        self.view.addGestureRecognizer(swipeRight)
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(ViewController.handlePan(sender:)))
-        view.addGestureRecognizer(pan)
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeUp.direction = .up
+        self.view.addGestureRecognizer(swipeUp)
+
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeDown.direction = .down
+        self.view.addGestureRecognizer(swipeDown)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
+        swipeLeft.direction = .left
+        self.view.addGestureRecognizer(swipeLeft)
     }
     
-    // Refactor
-    @objc func handlePan(sender: UIPanGestureRecognizer) {
-        
-        let box = sender.view!
-        self.view.bringSubviewToFront(box)
-        
-        switch sender.state {
-            
-        case .began, .changed:
-            moveViewWithPan(view: box, sender: sender)
-        case .ended:
-            print("pan ended")
-        default:
-            break
+    private func postAnimateAction(_ missingBox: Box, _ movingBox: Box) {
+        self.view.isUserInteractionEnabled = true
+        movingBox.transform = .identity
+        missingBox.number = movingBox.number
+        movingBox.number = nil
+        movingBox.backgroundColor = .clear
+        missingBox.backgroundColor = .blue
+        if checkWin() {
+            let alert = UIAlertController(title: "YOU WIN!", message: "Congratulations!", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Play Again?", style: .default) { _ in
+                self.setupLabels()
+            })
+            self.present(alert, animated: true)
         }
     }
     
     
-    func moveViewWithPan(view: UIView, sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: view)
-        
-        view.center = CGPoint(x: view.center.x + translation.x, y: view.center.y + translation.y)
-        sender.setTranslation(CGPoint.zero, in: view)
+    // MARK: - User Interactions
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        let swipeDuration = 0.1
+        let translationAmount = self.grid.frame.width * 0.255
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            self.view.isUserInteractionEnabled = false
+
+            switch swipeGesture.direction {
+            case .right:
+                print("Swiped right")
+                // check for index out of bounds
+                if missingBoxCoords.0 - 1 < 0 {
+                    print("prevented index out of bounds on right")
+                    self.view.isUserInteractionEnabled = true
+                    return
+                }
+                let movingBox = spaces_boxes[missingBoxCoords.0 - 1][missingBoxCoords.1].1
+                let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
+                
+                UIView.animate(withDuration: swipeDuration) {
+                    movingBox.transform = CGAffineTransform(translationX: translationAmount, y: 0)
+                } completion: { (_) in
+                    // replace missing box coords
+                    self.missingBoxCoords.0 = self.missingBoxCoords.0 - 1
+                    self.postAnimateAction(missingBox, movingBox)
+                }
+            case .down:
+                print("Swiped down")
+                // check for index out of bounds
+                if missingBoxCoords.1 - 1 < 0 {
+                    print("prevented index out of bounds on down")
+                    self.view.isUserInteractionEnabled = true
+                    return
+                }
+                let movingBox = spaces_boxes[missingBoxCoords.0][missingBoxCoords.1 - 1].1
+                let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
+
+                UIView.animate(withDuration: swipeDuration) {
+                    movingBox.transform = CGAffineTransform(translationX: 0, y: translationAmount)
+                } completion: { (_) in
+                    self.missingBoxCoords.1 = self.missingBoxCoords.1 - 1
+                    self.postAnimateAction(missingBox, movingBox)
+                }
+            case .left:
+                print("Swiped left")
+                // check for index out of bounds
+                if missingBoxCoords.0 + 1 >= spaces_boxes.count {
+                    print("prevented index out of bounds on left")
+                    self.view.isUserInteractionEnabled = true
+                    return
+                }
+                let movingBox = spaces_boxes[missingBoxCoords.0 + 1][missingBoxCoords.1].1
+                let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
+
+                UIView.animate(withDuration: swipeDuration) {
+                    movingBox.transform = CGAffineTransform(translationX: -translationAmount, y: 0)
+                } completion: { (_) in
+                    // replace missing box coords
+                    self.missingBoxCoords.0 = self.missingBoxCoords.0 + 1
+                    self.postAnimateAction(missingBox, movingBox)
+                }
+            case .up:
+                print("Swiped up")
+                // check for index out of bounds
+                if missingBoxCoords.1 + 1 >= spaces_boxes[0].count {
+                    print("prevented index out of bounds on up")
+                    self.view.isUserInteractionEnabled = true
+                    return
+                }
+                let movingBox = spaces_boxes[missingBoxCoords.0][missingBoxCoords.1 + 1].1
+                let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
+
+                UIView.animate(withDuration: swipeDuration) {
+                    movingBox.transform = CGAffineTransform(translationX: 0, y: -translationAmount)
+                } completion: { (_) in
+                    // replace missing box coords
+                    self.missingBoxCoords.1 = self.missingBoxCoords.1 + 1
+                    self.postAnimateAction(missingBox, movingBox)
+                }
+            default:
+                break
+            }
+        }
+    }
+
+    
+    // returns true if it's a win
+    func checkWin() -> Bool {
+        var counter = 1
+        for j in 0..<spaces_boxes[0].count {
+            print(spaces_boxes[0].count)
+            for i in 0..<spaces_boxes.count {
+                if let currentNum = spaces_boxes[i][j].1.number {
+                    if counter != currentNum {
+                        return false
+                    }
+                    counter += 1
+                }
+            }
+        }
+        return true
     }
     
     func setupUI() {
+        self.view.backgroundColor = .gray
         setupGrid()
         setupAllSpaces()
-        
-        self.view.layoutIfNeeded()
-        
-        let boxColor: UIColor = .blue
-        
-        let boxes = [
-            (box0_0, space0_0),
-            (box1_0, space1_0),
-            (box2_0, space2_0),
-            (box3_0, space3_0),
-            (box0_1, space0_1),
-            (box1_1, space1_1),
-            (box2_1, space2_1),
-            (box3_1, space3_1),
-            (box0_2, space0_2),
-            (box1_2, space1_2),
-            (box2_2, space2_2),
-            (box3_2, space3_2),
-            (box0_3, space0_3),
-            (box1_3, space1_3),
-            (box2_3, space2_3),
-            (box3_3, space3_3),
-        ]
-        
-        // label each box, and pick a random space to remove
-        let skipIndex = Int.random(in: 0...15)
-        var numbers = Array(1...15)
-        var numbersIndex = 0
-        numbers.shuffle()
-        for i in 0..<boxes.count {
-            if skipIndex == i {
-                // specify this as the empty box
-                continue
-            }
-            let (box, space) = boxes[i]
-            box.frame = space.bounds
-            box.backgroundColor = boxColor
-            space.addSubview(box)
-            
-            let numberLabel = UILabel()
-            numberLabel.translatesAutoresizingMaskIntoConstraints = false
-            box.addSubview(numberLabel)
-            
-            numberLabel.centerXAnchor.constraint(equalTo: box.centerXAnchor).isActive = true
-            numberLabel.centerYAnchor.constraint(equalTo: box.centerYAnchor).isActive = true
-            numberLabel.text = "\(numbers[numbersIndex])"
-            numbersIndex += 1
-            
-            addPanGesture(view: box)
-        }
+        setupLabels()
     }
     
     private func setupGrid() {
@@ -123,94 +198,76 @@ class ViewController: UIViewController {
     }
     
     private func setupAllSpaces() {
-        // left, top
-        setupSpace(space0_0)
-        setupTopRow(space0_0)
-        setupFarLeftCol(space0_0)
-        
-        // mid left, top
-        setupSpace(space1_0)
-        setupTopRow(space1_0)
-        setupMidLeftCol(space1_0)
-        
-        // mid right, top
-        setupSpace(space2_0)
-        setupTopRow(space2_0)
-        setupMidRightCol(space2_0)
-        
-        // right, top
-        setupSpace(space3_0)
-        setupTopRow(space3_0)
-        setupFarRightCol(space3_0)
-        
-        
-        // left, mid top
-        setupSpace(space0_1)
-        setupMidTopRow(space0_1)
-        setupFarLeftCol(space0_1)
-        
-        // mid left, mid top
-        setupSpace(space1_1)
-        setupMidTopRow(space1_1)
-        setupMidLeftCol(space1_1)
-        
-        // mid right, mid top
-        setupSpace(space2_1)
-        setupMidTopRow(space2_1)
-        setupMidRightCol(space2_1)
-        
-        // right, mid top
-        setupSpace(space3_1)
-        setupMidTopRow(space3_1)
-        setupFarRightCol(space3_1)
-        
-        
-        // left, mid bottom
-        setupSpace(space0_2)
-        setupMidBottomRow(space0_2)
-        setupFarLeftCol(space0_2)
-        
-        // mid left, mid bottom
-        setupSpace(space1_2)
-        setupMidBottomRow(space1_2)
-        setupMidLeftCol(space1_2)
-        
-        // mid right, mid bottom
-        setupSpace(space2_2)
-        setupMidBottomRow(space2_2)
-        setupMidRightCol(space2_2)
-        
-        // right, mid bottom
-        setupSpace(space3_2)
-        setupMidBottomRow(space3_2)
-        setupFarRightCol(space3_2)
-        
-        
-        // left, bottom
-        setupSpace(space0_3)
-        setupBottomRow(space0_3)
-        setupFarLeftCol(space0_3)
-        
-        // mid left, bottom
-        setupSpace(space1_3)
-        setupBottomRow(space1_3)
-        setupMidLeftCol(space1_3)
-        
-        // mid right, bottom
-        setupSpace(space2_3)
-        setupBottomRow(space2_3)
-        setupMidRightCol(space2_3)
-        
-        // right, bottom
-        setupSpace(space3_3)
-        setupBottomRow(space3_3)
-        setupFarRightCol(space3_3)
+        for i in 0..<spaces_boxes.count {
+            for j in 0..<spaces_boxes[i].count {
+                let (currentSpace, currentBox) = spaces_boxes[j][i]
+                setupSpace(currentSpace)
+                currentBox.setup()
+                
+                switch i {
+                case 0:
+                    setupTopRow(currentSpace)
+                case 1:
+                    setupMidTopRow(currentSpace)
+                case 2:
+                    setupMidBottomRow(currentSpace)
+                case 3:
+                    setupBottomRow(currentSpace)
+                default:
+                    break
+                }
+                
+                switch j {
+                case 0:
+                    setupFarLeftCol(currentSpace)
+                case 1:
+                    setupMidLeftCol(currentSpace)
+                case 2:
+                    setupMidRightCol(currentSpace)
+                case 3:
+                    setupFarRightCol(currentSpace)
+                default:
+                    break
+                }
+                
+                self.view.layoutIfNeeded()
+                currentBox.frame = currentSpace.bounds
+                currentSpace.addSubview(currentBox)
+            }
+        }
+    }
+    
+    func setupLabels() {
+        let boxColor: UIColor = .blue
+        // label each box, and pick a random space to remove
+        let skipIndexI = Int.random(in: 0...3)
+        let skipIndexJ = Int.random(in: 0...3)
+        var numbers = Array(1...15)
+//        numbers = [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12]
+        var numbersIndex = 0
+//        numbers.shuffle()
+        for j in 0..<spaces_boxes.count {
+            for i in 0..<spaces_boxes[j].count {
+                let (_, box) = spaces_boxes[i][j]
+                box.backgroundColor = boxColor
+
+                if skipIndexI == i && skipIndexJ == j {
+                    // specify this as the empty box
+                    box.backgroundColor = .clear
+                    missingBoxCoords = (i, j)
+                    box.number = nil
+                    continue
+                }
+
+                box.number = numbers[numbersIndex]
+                numbersIndex += 1
+            }
+        }
     }
     
     
     private func setupSpace(_ space: UIView) {
-        let emptyGridColor: UIColor = .white
-        let divider: CGFloat = 0.24
+        let emptyGridColor: UIColor = .clear
         space.translatesAutoresizingMaskIntoConstraints = false
         grid.addSubview(space)
         space.widthAnchor.constraint(equalTo: grid.widthAnchor, multiplier: divider).isActive = true
@@ -248,5 +305,11 @@ class ViewController: UIViewController {
     
     private func setupFarRightCol(_ space: UIView) {
         space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: 0).isActive = true
+    }
+}
+
+extension ViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
     }
 }
