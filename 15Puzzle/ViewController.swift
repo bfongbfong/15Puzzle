@@ -12,7 +12,10 @@ class ViewController: UIViewController {
     let grid = UIView()
         
     // the spaces actually look the way i've organized them
-    let space0_0 = UIView(), space1_0 = UIView(), space2_0 = UIView(), space3_0 = UIView(), space0_1 = UIView(), space1_1 = UIView(), space2_1 = UIView(), space3_1 = UIView(), space0_2 = UIView(), space1_2 = UIView(), space2_2 = UIView(), space3_2 = UIView(), space0_3 = UIView(), space1_3 = UIView(), space2_3 = UIView(), space3_3 = UIView()
+    let space0_0 = UIView(), space1_0 = UIView(), space2_0 = UIView(), space3_0 = UIView(),
+        space0_1 = UIView(), space1_1 = UIView(), space2_1 = UIView(), space3_1 = UIView(),
+        space0_2 = UIView(), space1_2 = UIView(), space2_2 = UIView(), space3_2 = UIView(),
+        space0_3 = UIView(), space1_3 = UIView(), space2_3 = UIView(), space3_3 = UIView()
 
     let box0_0 = Box(), box1_0 = Box(), box2_0 = Box(), box3_0 = Box(),
         box0_1 = Box(), box1_1 = Box(), box2_1 = Box(), box3_1 = Box(),
@@ -24,7 +27,8 @@ class ViewController: UIViewController {
     
     var missingBoxCoords: (Int, Int)!
     
-    let divider: CGFloat = 0.24
+    let divider: CGFloat = 0.25
+    var totalGridMargin: CGFloat = 5.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +82,10 @@ class ViewController: UIViewController {
                 let movingBox = spaces_boxes[missingBoxCoords.0 - 1][missingBoxCoords.1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
                 
+                let missingSpace = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].0
+                self.grid.bringSubviewToFront(movingBox)
+                self.grid.sendSubviewToBack(missingSpace)
+
                 UIView.animate(withDuration: swipeDuration) {
                     movingBox.transform = CGAffineTransform(translationX: translationAmount, y: 0)
                 } completion: { (_) in
@@ -95,6 +103,11 @@ class ViewController: UIViewController {
                 }
                 let movingBox = spaces_boxes[missingBoxCoords.0][missingBoxCoords.1 - 1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
+                let missingSpace = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].0
+
+                
+                self.grid.bringSubviewToFront(movingBox)
+                self.grid.sendSubviewToBack(missingSpace)
 
                 UIView.animate(withDuration: swipeDuration) {
                     movingBox.transform = CGAffineTransform(translationX: 0, y: translationAmount)
@@ -112,6 +125,11 @@ class ViewController: UIViewController {
                 }
                 let movingBox = spaces_boxes[missingBoxCoords.0 + 1][missingBoxCoords.1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
+                
+                let missingSpace = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].0
+                
+                self.grid.bringSubviewToFront(movingBox)
+                self.grid.sendSubviewToBack(missingSpace)
 
                 UIView.animate(withDuration: swipeDuration) {
                     movingBox.transform = CGAffineTransform(translationX: -translationAmount, y: 0)
@@ -130,6 +148,11 @@ class ViewController: UIViewController {
                 }
                 let movingBox = spaces_boxes[missingBoxCoords.0][missingBoxCoords.1 + 1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
+                let missingSpace = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].0
+
+                
+                self.grid.bringSubviewToFront(movingBox)
+                self.grid.sendSubviewToBack(missingSpace)
 
                 UIView.animate(withDuration: swipeDuration) {
                     movingBox.transform = CGAffineTransform(translationX: 0, y: -translationAmount)
@@ -150,7 +173,7 @@ class ViewController: UIViewController {
         missingBox.number = movingBox.number
         movingBox.number = nil
         movingBox.backgroundColor = .clear
-        missingBox.backgroundColor = .blue
+        missingBox.backgroundColor = .boxColor
         if checkWin() {
             let alert = UIAlertController(title: "YOU WIN!", message: "Congratulations!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -168,7 +191,6 @@ class ViewController: UIViewController {
     func checkWin() -> Bool {
         var counter = 1
         for j in 0..<spaces_boxes[0].count {
-            print(spaces_boxes[0].count)
             for i in 0..<spaces_boxes.count {
                 if let currentNum = spaces_boxes[i][j].1.number {
                     if counter != currentNum {

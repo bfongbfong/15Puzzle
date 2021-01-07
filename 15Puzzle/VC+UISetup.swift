@@ -9,7 +9,7 @@ import UIKit
 
 extension ViewController {
     func setupUI() {
-        self.view.backgroundColor = .gray
+        self.view.backgroundColor = .white
         setupGrid()
         setupAllSpaces()
         setupLabels()
@@ -23,7 +23,9 @@ extension ViewController {
         grid.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         grid.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
         grid.heightAnchor.constraint(equalTo: grid.widthAnchor).isActive = true
-        grid.backgroundColor = .white
+        grid.backgroundColor = .appGray
+        grid.layer.cornerRadius = 10
+        grid.clipsToBounds = true
     }
     
     private func setupAllSpaces() {
@@ -60,14 +62,16 @@ extension ViewController {
                 }
                 
                 self.view.layoutIfNeeded()
-                currentBox.frame = currentSpace.bounds
-                currentSpace.addSubview(currentBox)
+//                currentBox.frame = currentSpace.bounds
+                currentBox.frame = currentSpace.frame
+                self.grid.addSubview(currentBox)
+//                currentSpace.addSubview(currentBox)
+                currentBox.layer.cornerRadius = 10
             }
         }
     }
     
     func setupLabels() {
-        let boxColor: UIColor = .blue
         // label each box, and pick a random space to remove
         let skipIndexI = Int.random(in: 0...3)
         let skipIndexJ = Int.random(in: 0...3)
@@ -77,7 +81,7 @@ extension ViewController {
         for j in 0..<spaces_boxes.count {
             for i in 0..<spaces_boxes[j].count {
                 let (_, box) = spaces_boxes[i][j]
-                box.backgroundColor = boxColor
+                box.backgroundColor = .boxColor
 
                 if skipIndexI == i && skipIndexJ == j {
                     // specify this as the empty box
@@ -95,43 +99,64 @@ extension ViewController {
     
     
     private func setupSpace(_ space: UIView) {
-        let emptyGridColor: UIColor = .clear
+        let emptyGridColor: UIColor = .white
         space.translatesAutoresizingMaskIntoConstraints = false
         grid.addSubview(space)
-        space.widthAnchor.constraint(equalTo: grid.widthAnchor, multiplier: divider).isActive = true
-        space.heightAnchor.constraint(equalTo: grid.heightAnchor, multiplier: divider).isActive = true
+        space.widthAnchor.constraint(equalTo: grid.widthAnchor, multiplier: divider, constant: -(totalGridMargin * 5 / 4)).isActive = true
+        space.heightAnchor.constraint(equalTo: grid.heightAnchor, multiplier: divider, constant: -(totalGridMargin * 5 / 4)).isActive = true
         space.backgroundColor = emptyGridColor
+        space.layer.cornerRadius = 10
     }
     
     private func setupTopRow(_ space: UIView) {
-        space.topAnchor.constraint(equalTo: grid.topAnchor, constant: 0).isActive = true
+        space.topAnchor.constraint(equalTo: grid.topAnchor, constant: (totalGridMargin * 5 / 4 / 2)).isActive = true
     }
     
     private func setupMidTopRow(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 0.745, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 0.75, constant: 0.0).isActive = true
     }
     
     private func setupMidBottomRow(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 1.255, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: space, attribute: .centerY, relatedBy: .equal, toItem: grid, attribute: .centerY, multiplier: 1.25, constant: 0.0).isActive = true
     }
     
     private func setupBottomRow(_ space: UIView) {
-        space.bottomAnchor.constraint(equalTo: grid.bottomAnchor, constant: 0).isActive = true
+        space.bottomAnchor.constraint(equalTo: grid.bottomAnchor, constant: -(totalGridMargin * 5 / 4 / 2)).isActive = true
     }
     
     private func setupFarLeftCol(_ space: UIView) {
-        space.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: 0).isActive = true
+        space.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: (totalGridMargin * 5 / 4 / 2)).isActive = true
     }
     
     private func setupMidLeftCol(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 0.745, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 0.75, constant: 0).isActive = true
     }
     
     private func setupMidRightCol(_ space: UIView) {
-        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 1.255, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: space, attribute: .centerX, relatedBy: .equal, toItem: grid, attribute: .centerX, multiplier: 1.25, constant: 0).isActive = true
     }
     
     private func setupFarRightCol(_ space: UIView) {
-        space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: 0).isActive = true
+        space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: -(totalGridMargin * 5 / 4 / 2)).isActive = true
+    }
+}
+
+extension UIFont {
+  class var largeHeader: UIFont {
+    return UIFont(name: "AvenirNext-Bold", size: 30)! // force unwrap because I know these exist in xcode
+  }
+  
+  class var subtitle: UIFont {
+    UIFont(name: "AvenirNext-Regular", size: 14)!
+  }
+}
+
+extension UIColor {
+    class var boxColor: UIColor {
+        return UIColor(red: 32/255, green: 115/255, blue: 152/255, alpha: 1.0)
+    }
+    
+    class var appGray: UIColor {
+        return UIColor(red: 202/255, green: 213/255, blue: 226/255, alpha: 1.0)
     }
 }
