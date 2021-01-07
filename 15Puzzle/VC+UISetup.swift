@@ -10,10 +10,24 @@ import UIKit
 extension ViewController {
     func setupUI() {
         self.view.backgroundColor = .white
+        setupRestartButton()
         setupTitles()
         setupGrid()
         setupAllSpaces()
         setupLabels()
+    }
+    
+    private func setupRestartButton() {
+        restartButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(restartButton)
+        
+        restartButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        restartButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        restartButton.widthAnchor.constraint(equalTo: restartButton.heightAnchor).isActive = true
+        restartButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        restartButton.backgroundColor = .clear
+        restartButton.setImage(UIImage(named: "refresh"), for: .normal)
+        restartButton.addTarget(self, action: #selector(refreshAction), for: .touchUpInside)
     }
     
     private func setupTitles() {
@@ -50,7 +64,6 @@ extension ViewController {
         
         grid.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         grid.topAnchor.constraint(equalTo: self.subtitleLabel.bottomAnchor, constant: 50).isActive = true
-//        NSLayoutConstraint(item: self.grid, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.2, constant: 0.0).isActive = true
         grid.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
         grid.heightAnchor.constraint(equalTo: grid.widthAnchor).isActive = true
         grid.backgroundColor = .appGray

@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     let grid = UIView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
+    let restartButton = UIButton()
         
     // the spaces actually look the way i've organized them
     let space0_0 = UIView(), space1_0 = UIView(), space2_0 = UIView(), space3_0 = UIView(),
@@ -167,6 +168,15 @@ class ViewController: UIViewController {
                 break
             }
         }
+    }
+    
+    @objc func refreshAction() {
+        let alert = UIAlertController(title: "Rescramble game?", message: "Are you sure?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+            self.setupLabels()
+        })
+        self.present(alert, animated: true)
     }
     
     private func postAnimateAction(_ missingBox: Box, _ movingBox: Box) {
