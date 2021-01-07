@@ -10,9 +10,25 @@ import UIKit
 class ViewController: UIViewController {
     
     let grid = UIView()
+    let gridDimensions = 4
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let restartButton = UIButton()
+    var numbers: [Int] {
+        get {
+            if let numbers = UserDefaults.standard.numberOrder {
+                return numbers
+            } else {
+                self.generateBoardData()
+                return UserDefaults.standard.numberOrder!
+            }
+        }
+        set {
+            UserDefaults.standard.numberOrder = newValue
+        }
+    }
+    /// This is used to signitiy in the data array of numbers that this box is the empty one. Making the array compatible with nil values would be too complicated.
+    let numberToSignifyEmpty = 100
         
     // the spaces actually look the way i've organized them
     let space0_0 = UIView(), space1_0 = UIView(), space2_0 = UIView(), space3_0 = UIView(),
@@ -65,6 +81,31 @@ class ViewController: UIViewController {
         self.view.addGestureRecognizer(swipeLeft)
     }
     
+    // move these two to a utilies file
+    func convertCoordToIndex(_ x: Int, _ y: Int, _ width: Int) -> Int {
+        print("converting coordinate \(x), \(y)")
+        let answer = (y * width) + x
+        print("to \(answer)")
+        return answer
+    }
+    
+    func swapElements(in array: inout [Int], _ firstIndex: Int, _ secondIndex: Int) {
+        let temp = array[firstIndex]
+//        array.remove(at: firstIndex)
+        array[firstIndex] = array[secondIndex]
+//        array.insert(temp, at: secondIndex)
+        array[secondIndex] = temp
+    }
+    
+    func swapPositions(_ first: (Int, Int), _ second: (Int, Int)) {
+        print(self.numbers)
+        let firstIndex = convertCoordToIndex(first.0, first.1, gridDimensions)
+        let secondIndex = convertCoordToIndex(second.0, second.1, gridDimensions)
+        print("swapping index \(firstIndex) (\(self.numbers[firstIndex])) and \(secondIndex) (\(self.numbers[secondIndex]))")
+        swapElements(in: &self.numbers, firstIndex, secondIndex)
+        print(self.numbers)
+    }
+    
     
     // MARK: - User Interactions
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
@@ -82,6 +123,7 @@ class ViewController: UIViewController {
                     self.view.isUserInteractionEnabled = true
                     return
                 }
+                let movingBoxCoords = (missingBoxCoords.0 - 1, missingBoxCoords.1)
                 let movingBox = spaces_boxes[missingBoxCoords.0 - 1][missingBoxCoords.1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
                 
@@ -93,6 +135,7 @@ class ViewController: UIViewController {
                     movingBox.transform = CGAffineTransform(translationX: translationAmount, y: 0)
                 } completion: { (_) in
                     // replace missing box coords
+                    self.swapPositions(movingBoxCoords, self.missingBoxCoords)
                     self.missingBoxCoords.0 = self.missingBoxCoords.0 - 1
                     self.postAnimateAction(missingBox, movingBox)
                 }
@@ -104,6 +147,7 @@ class ViewController: UIViewController {
                     self.view.isUserInteractionEnabled = true
                     return
                 }
+                let movingBoxCoords = (missingBoxCoords.0, missingBoxCoords.1 - 1)
                 let movingBox = spaces_boxes[missingBoxCoords.0][missingBoxCoords.1 - 1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
                 let missingSpace = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].0
@@ -115,6 +159,7 @@ class ViewController: UIViewController {
                 UIView.animate(withDuration: swipeDuration) {
                     movingBox.transform = CGAffineTransform(translationX: 0, y: translationAmount)
                 } completion: { (_) in
+                    self.swapPositions(movingBoxCoords, self.missingBoxCoords)
                     self.missingBoxCoords.1 = self.missingBoxCoords.1 - 1
                     self.postAnimateAction(missingBox, movingBox)
                 }
@@ -126,6 +171,7 @@ class ViewController: UIViewController {
                     self.view.isUserInteractionEnabled = true
                     return
                 }
+                let movingBoxCoords = (missingBoxCoords.0 + 1, missingBoxCoords.1)
                 let movingBox = spaces_boxes[missingBoxCoords.0 + 1][missingBoxCoords.1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
                 
@@ -138,6 +184,7 @@ class ViewController: UIViewController {
                     movingBox.transform = CGAffineTransform(translationX: -translationAmount, y: 0)
                 } completion: { (_) in
                     // replace missing box coords
+                    self.swapPositions(movingBoxCoords, self.missingBoxCoords)
                     self.missingBoxCoords.0 = self.missingBoxCoords.0 + 1
                     self.postAnimateAction(missingBox, movingBox)
                 }
@@ -149,6 +196,7 @@ class ViewController: UIViewController {
                     self.view.isUserInteractionEnabled = true
                     return
                 }
+                let movingBoxCoords = (missingBoxCoords.0, missingBoxCoords.1 + 1)
                 let movingBox = spaces_boxes[missingBoxCoords.0][missingBoxCoords.1 + 1].1
                 let missingBox = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].1
                 let missingSpace = self.spaces_boxes[self.missingBoxCoords.0][self.missingBoxCoords.1].0
@@ -161,6 +209,7 @@ class ViewController: UIViewController {
                     movingBox.transform = CGAffineTransform(translationX: 0, y: -translationAmount)
                 } completion: { (_) in
                     // replace missing box coords
+                    self.swapPositions(movingBoxCoords, self.missingBoxCoords)
                     self.missingBoxCoords.1 = self.missingBoxCoords.1 + 1
                     self.postAnimateAction(missingBox, movingBox)
                 }
@@ -174,7 +223,8 @@ class ViewController: UIViewController {
         let alert = UIAlertController(title: "Rescramble game?", message: "Are you sure?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
-            self.setupLabels()
+            self.generateBoardData()
+            self.updateBoard()
         })
         self.present(alert, animated: true)
     }
@@ -186,11 +236,14 @@ class ViewController: UIViewController {
         movingBox.number = nil
         movingBox.backgroundColor = .clear
         missingBox.backgroundColor = .boxColor
+        // need to pass in the new numbers
+        updateBoardData(self.numbers, self.missingBoxCoords.0, self.missingBoxCoords.1)
         if checkWin() {
             let alert = UIAlertController(title: "YOU WIN!", message: "Congratulations!", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             alert.addAction(UIAlertAction(title: "Play Again?", style: .default) { _ in
-                self.setupLabels()
+                self.generateBoardData()
+                self.updateBoard()
             })
             self.present(alert, animated: true)
         }
@@ -202,17 +255,44 @@ class ViewController: UIViewController {
     // returns true if it's a win
     func checkWin() -> Bool {
         var counter = 1
-        for j in 0..<spaces_boxes[0].count {
-            for i in 0..<spaces_boxes.count {
-                if let currentNum = spaces_boxes[i][j].1.number {
-                    if counter != currentNum {
-                        return false
-                    }
-                    counter += 1
-                }
+        for num in numbers {
+            if num == numberToSignifyEmpty { continue }
+            if counter != num {
+                return false
             }
+            counter += 1
         }
         return true
+    }
+    
+    func generateBoardData() {
+        let emptyBoxXCoord = Int.random(in: 0...3)
+        let emptyBoxYCoord = Int.random(in: 0...3)
+        let emptyIndex = convertCoordToIndex(emptyBoxXCoord, emptyBoxYCoord, 4)
+        var numbers = Array(1...15) // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+        numbers.shuffle()
+        numbers.insert(numberToSignifyEmpty, at: emptyIndex)
+        UserDefaults.standard.emptyBoxXCoord = emptyBoxXCoord
+        UserDefaults.standard.emptyBoxYCoord = emptyBoxYCoord
+        UserDefaults.standard.numberOrder = numbers
+    }
+    
+    func updateBoard() {
+        // there were numbers previously (the user has played before)
+        // this is also a second layer safety net. the first check for this is in the getter for the numbers property
+        guard let numbers = UserDefaults.standard.numberOrder else {
+            generateBoardData()
+            setupLabels(self.numbers, UserDefaults.standard.emptyBoxXCoord, UserDefaults.standard.emptyBoxYCoord)
+            return
+        }
+        
+        setupLabels(numbers, UserDefaults.standard.emptyBoxXCoord, UserDefaults.standard.emptyBoxYCoord)
+    }
+    
+    func updateBoardData(_ numbers: [Int], _ emptyBoxXCoord: Int, _ emptyBoxYCoord: Int) {
+        UserDefaults.standard.numberOrder = numbers
+        UserDefaults.standard.emptyBoxXCoord = emptyBoxXCoord
+        UserDefaults.standard.emptyBoxYCoord = emptyBoxYCoord
     }
 }
 

@@ -14,7 +14,7 @@ extension ViewController {
         setupTitles()
         setupGrid()
         setupAllSpaces()
-        setupLabels()
+        updateBoard()
     }
     
     private func setupRestartButton() {
@@ -105,32 +105,28 @@ extension ViewController {
                 }
                 
                 self.view.layoutIfNeeded()
-//                currentBox.frame = currentSpace.bounds
                 currentBox.frame = currentSpace.frame
                 self.grid.addSubview(currentBox)
-//                currentSpace.addSubview(currentBox)
                 currentBox.layer.cornerRadius = 10
             }
         }
     }
     
-    func setupLabels() {
+    /// Labels each box with a random number between 1...15, and picks a random box to remove.
+    func setupLabels(_ numbers: [Int], _ emptyBoxXCoord: Int, _ emptyBoxYCoord: Int) {
         // label each box, and pick a random space to remove
-        let skipIndexI = Int.random(in: 0...3)
-        let skipIndexJ = Int.random(in: 0...3)
-        var numbers = Array(1...15)
         var numbersIndex = 0
-        numbers.shuffle()
         for j in 0..<spaces_boxes.count {
             for i in 0..<spaces_boxes[j].count {
                 let (_, box) = spaces_boxes[i][j]
                 box.backgroundColor = .boxColor
 
-                if skipIndexI == i && skipIndexJ == j {
+                if i == emptyBoxXCoord, j == emptyBoxYCoord {
                     // specify this as the empty box
                     box.backgroundColor = .clear
                     missingBoxCoords = (i, j)
                     box.number = nil
+                    numbersIndex += 1
                     continue
                 }
 
