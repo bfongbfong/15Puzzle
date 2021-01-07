@@ -10,9 +10,38 @@ import UIKit
 extension ViewController {
     func setupUI() {
         self.view.backgroundColor = .white
+        setupTitles()
         setupGrid()
         setupAllSpaces()
         setupLabels()
+    }
+    
+    private func setupTitles() {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(titleLabel)
+        
+        titleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        NSLayoutConstraint(item: self.titleLabel, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 0.4, constant: 0.0).isActive = true
+
+        titleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        titleLabel.font = .largeHeader
+        titleLabel.textColor = .boxColor
+        titleLabel.textAlignment = .center
+        titleLabel.text = "15 Puzzle Game"
+        
+
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(subtitleLabel)
+        
+        subtitleLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 10).isActive = true
+        subtitleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        subtitleLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        subtitleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        subtitleLabel.font = .subtitle
+        subtitleLabel.textColor = .darkBlue
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.text = "Slide in a direction to move the tiles."
     }
     
     private func setupGrid() {
@@ -20,7 +49,8 @@ extension ViewController {
         self.view.addSubview(grid)
         
         grid.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        grid.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        grid.topAnchor.constraint(equalTo: self.subtitleLabel.bottomAnchor, constant: 50).isActive = true
+//        NSLayoutConstraint(item: self.grid, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.2, constant: 0.0).isActive = true
         grid.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.9).isActive = true
         grid.heightAnchor.constraint(equalTo: grid.widthAnchor).isActive = true
         grid.backgroundColor = .appGray

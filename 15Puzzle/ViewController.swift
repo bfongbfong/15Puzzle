@@ -10,6 +10,8 @@ import UIKit
 class ViewController: UIViewController {
     
     let grid = UIView()
+    let titleLabel = UILabel()
+    let subtitleLabel = UILabel()
         
     // the spaces actually look the way i've organized them
     let space0_0 = UIView(), space1_0 = UIView(), space2_0 = UIView(), space3_0 = UIView(),

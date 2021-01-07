@@ -27,7 +27,7 @@ class Box: UIView {
 
         numberLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         numberLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        numberLabel.font = .largeHeader
+        numberLabel.font = .mediumHeader
         numberLabel.textColor = .white
     }
 }
