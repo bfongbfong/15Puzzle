@@ -16,6 +16,7 @@
 		5556C3F125A65B7700B014A7 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556C3F025A65B7700B014A7 /* Box.swift */; };
 		5556C3F525A65C1000B014A7 /* VC+UISetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556C3F425A65C1000B014A7 /* VC+UISetup.swift */; };
 		5556C3F825A65E1200B014A7 /* Solvability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556C3F725A65E1200B014A7 /* Solvability.swift */; };
+		5556C3FB25A6B2DC00B014A7 /* StyleGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556C3FA25A6B2DC00B014A7 /* StyleGuide.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		5556C3F025A65B7700B014A7 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		5556C3F425A65C1000B014A7 /* VC+UISetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+UISetup.swift"; sourceTree = "<group>"; };
 		5556C3F725A65E1200B014A7 /* Solvability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solvability.swift; sourceTree = "<group>"; };
+		5556C3FA25A6B2DC00B014A7 /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				5556C3DA25A3E8E800B014A7 /* ViewController.swift */,
 				5556C3F425A65C1000B014A7 /* VC+UISetup.swift */,
 				5556C3F725A65E1200B014A7 /* Solvability.swift */,
+				5556C3FA25A6B2DC00B014A7 /* StyleGuide.swift */,
 				5556C3DC25A3E8E800B014A7 /* Main.storyboard */,
 				5556C3DF25A3E8EA00B014A7 /* Assets.xcassets */,
 				5556C3E125A3E8EA00B014A7 /* LaunchScreen.storyboard */,
@@ -154,6 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5556C3FB25A6B2DC00B014A7 /* StyleGuide.swift in Sources */,
 				5556C3DB25A3E8E800B014A7 /* ViewController.swift in Sources */,
 				5556C3F125A65B7700B014A7 /* Box.swift in Sources */,
 				5556C3F525A65C1000B014A7 /* VC+UISetup.swift in Sources */,
