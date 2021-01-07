@@ -1,0 +1,16 @@
+PODS:
+  - Spruce (2.2.0)
+
+DEPENDENCIES:
+  - Spruce
+
+SPEC REPOS:
+  trunk:
+    - Spruce
+
+SPEC CHECKSUMS:
+  Spruce: 8456e4ab61ec6fd045e77dfcf07916e2e89f24d9
+
+PODFILE CHECKSUM: 8fc66798f18f8c33be13fbaca907eabd106ce6ab
+
+COCOAPODS: 1.10.0

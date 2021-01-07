@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		543FC67D42CBAE5AD6ECBC83 /* Pods_15Puzzle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 247DCCE075132279D33EB512 /* Pods_15Puzzle.framework */; };
 		5556C3D725A3E8E800B014A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556C3D625A3E8E800B014A7 /* AppDelegate.swift */; };
 		5556C3D925A3E8E800B014A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556C3D825A3E8E800B014A7 /* SceneDelegate.swift */; };
 		5556C3DB25A3E8E800B014A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5556C3DA25A3E8E800B014A7 /* ViewController.swift */; };
@@ -21,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		142AB902A40C1783196127F5 /* Pods-15Puzzle.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-15Puzzle.debug.xcconfig"; path = "Target Support Files/Pods-15Puzzle/Pods-15Puzzle.debug.xcconfig"; sourceTree = "<group>"; };
+		247DCCE075132279D33EB512 /* Pods_15Puzzle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_15Puzzle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5556C3D325A3E8E800B014A7 /* 15Puzzle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 15Puzzle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5556C3D625A3E8E800B014A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5556C3D825A3E8E800B014A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +37,7 @@
 		5556C3F725A65E1200B014A7 /* Solvability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Solvability.swift; sourceTree = "<group>"; };
 		5556C3FA25A6B2DC00B014A7 /* StyleGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGuide.swift; sourceTree = "<group>"; };
 		5556C3FD25A75EB900B014A7 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
+		97383E4B63FF1B7CCE538BC3 /* Pods-15Puzzle.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-15Puzzle.release.xcconfig"; path = "Target Support Files/Pods-15Puzzle/Pods-15Puzzle.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,17 +45,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				543FC67D42CBAE5AD6ECBC83 /* Pods_15Puzzle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5020D0249D48779D9C32E324 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				247DCCE075132279D33EB512 /* Pods_15Puzzle.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5556C3CA25A3E8E800B014A7 = {
 			isa = PBXGroup;
 			children = (
 				5556C3D525A3E8E800B014A7 /* 15Puzzle */,
 				5556C3D425A3E8E800B014A7 /* Products */,
+				8D4EC2FBEA6E59796D5DB746 /* Pods */,
+				5020D0249D48779D9C32E324 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,6 +105,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		8D4EC2FBEA6E59796D5DB746 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				142AB902A40C1783196127F5 /* Pods-15Puzzle.debug.xcconfig */,
+				97383E4B63FF1B7CCE538BC3 /* Pods-15Puzzle.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -97,9 +122,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5556C3E725A3E8EA00B014A7 /* Build configuration list for PBXNativeTarget "15Puzzle" */;
 			buildPhases = (
+				BB721FE52EBD78A72CD4C299 /* [CP] Check Pods Manifest.lock */,
 				5556C3CF25A3E8E800B014A7 /* Sources */,
 				5556C3D025A3E8E800B014A7 /* Frameworks */,
 				5556C3D125A3E8E800B014A7 /* Resources */,
+				C1158ACB5D83BAD440CDAC29 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -154,6 +181,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BB721FE52EBD78A72CD4C299 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-15Puzzle-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C1158ACB5D83BAD440CDAC29 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-15Puzzle/Pods-15Puzzle-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-15Puzzle/Pods-15Puzzle-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-15Puzzle/Pods-15Puzzle-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5556C3CF25A3E8E800B014A7 /* Sources */ = {
@@ -311,6 +380,7 @@
 		};
 		5556C3E825A3E8EA00B014A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 142AB902A40C1783196127F5 /* Pods-15Puzzle.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -331,6 +401,7 @@
 		};
 		5556C3E925A3E8EA00B014A7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97383E4B63FF1B7CCE538BC3 /* Pods-15Puzzle.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

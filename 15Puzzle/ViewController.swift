@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Spruce
 
 class ViewController: UIViewController {
     
@@ -287,6 +288,7 @@ class ViewController: UIViewController {
         }
         
         setupLabels(numbers, UserDefaults.standard.emptyBoxXCoord, UserDefaults.standard.emptyBoxYCoord)
+        self.grid.spruce.animate([.fadeIn, .expand(.slightly)])
     }
     
     func updateBoardData(_ numbers: [Int], _ emptyBoxXCoord: Int, _ emptyBoxYCoord: Int) {
