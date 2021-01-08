@@ -142,14 +142,14 @@ extension ViewController {
         let emptyGridColor: UIColor = .white
         space.translatesAutoresizingMaskIntoConstraints = false
         grid.addSubview(space)
-        space.widthAnchor.constraint(equalTo: grid.widthAnchor, multiplier: divider, constant: -(totalGridMargin * 5 / 4)).isActive = true
-        space.heightAnchor.constraint(equalTo: grid.heightAnchor, multiplier: divider, constant: -(totalGridMargin * 5 / 4)).isActive = true
+        space.widthAnchor.constraint(equalTo: grid.widthAnchor, multiplier: divider, constant: -(totalGridMargin / 4)).isActive = true
+        space.heightAnchor.constraint(equalTo: grid.heightAnchor, multiplier: divider, constant: -(totalGridMargin / 4)).isActive = true
         space.backgroundColor = emptyGridColor
         space.layer.cornerRadius = 10
     }
     
     private func setupTopRow(_ space: UIView) {
-        space.topAnchor.constraint(equalTo: grid.topAnchor, constant: (totalGridMargin * 5 / 4 / 2)).isActive = true
+        space.topAnchor.constraint(equalTo: grid.topAnchor, constant: (totalGridMargin / 4 / 2)).isActive = true
     }
     
     private func setupMidTopRow(_ space: UIView) {
@@ -161,11 +161,11 @@ extension ViewController {
     }
     
     private func setupBottomRow(_ space: UIView) {
-        space.bottomAnchor.constraint(equalTo: grid.bottomAnchor, constant: -(totalGridMargin * 5 / 4 / 2)).isActive = true
+        space.bottomAnchor.constraint(equalTo: grid.bottomAnchor, constant: -(totalGridMargin / 4 / 2)).isActive = true
     }
     
     private func setupFarLeftCol(_ space: UIView) {
-        space.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: (totalGridMargin * 5 / 4 / 2)).isActive = true
+        space.leadingAnchor.constraint(equalTo: grid.leadingAnchor, constant: (totalGridMargin / 4 / 2)).isActive = true
     }
     
     private func setupMidLeftCol(_ space: UIView) {
@@ -177,6 +177,6 @@ extension ViewController {
     }
     
     private func setupFarRightCol(_ space: UIView) {
-        space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: -(totalGridMargin * 5 / 4 / 2)).isActive = true
+        space.trailingAnchor.constraint(equalTo: grid.trailingAnchor, constant: -(totalGridMargin / 4 / 2)).isActive = true
     }
 }

@@ -48,7 +48,7 @@ class ViewController: UIViewController {
     var missingBoxCoords: (Int, Int)!
     
     let divider: CGFloat = 0.25
-    var totalGridMargin: CGFloat = 5.0
+    var totalGridMargin: CGFloat = 25
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,27 +84,25 @@ class ViewController: UIViewController {
     
     // move these two to a utilies file
     func convertCoordToIndex(_ x: Int, _ y: Int, _ width: Int) -> Int {
-        print("converting coordinate \(x), \(y)")
+//        print("converting coordinate \(x), \(y)")
         let answer = (y * width) + x
-        print("to \(answer)")
+//        print("to \(answer)")
         return answer
     }
     
     func swapElements(in array: inout [Int], _ firstIndex: Int, _ secondIndex: Int) {
         let temp = array[firstIndex]
-//        array.remove(at: firstIndex)
         array[firstIndex] = array[secondIndex]
-//        array.insert(temp, at: secondIndex)
         array[secondIndex] = temp
     }
     
     func swapPositions(_ first: (Int, Int), _ second: (Int, Int)) {
-        print(self.numbers)
+//        print(self.numbers)
         let firstIndex = convertCoordToIndex(first.0, first.1, gridDimensions)
         let secondIndex = convertCoordToIndex(second.0, second.1, gridDimensions)
-        print("swapping index \(firstIndex) (\(self.numbers[firstIndex])) and \(secondIndex) (\(self.numbers[secondIndex]))")
+//        print("swapping index \(firstIndex) (\(self.numbers[firstIndex])) and \(secondIndex) (\(self.numbers[secondIndex]))")
         swapElements(in: &self.numbers, firstIndex, secondIndex)
-        print(self.numbers)
+//        print(self.numbers)
     }
     
     
@@ -288,7 +286,7 @@ class ViewController: UIViewController {
         }
         
         setupLabels(numbers, UserDefaults.standard.emptyBoxXCoord, UserDefaults.standard.emptyBoxYCoord)
-        self.grid.spruce.animate([.fadeIn, .expand(.slightly)])
+        self.grid.spruce.animate([.fadeIn, .expand(.moderately)])
     }
     
     func updateBoardData(_ numbers: [Int], _ emptyBoxXCoord: Int, _ emptyBoxYCoord: Int) {
