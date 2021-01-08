@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     let restartButton = UIButton()
+    
+    // returns the game numbers in a 1d array
     var numbers: [Int] {
         get {
             if let numbers = UserDefaults.standard.numberOrder {
@@ -27,6 +29,18 @@ class ViewController: UIViewController {
         set {
             UserDefaults.standard.numberOrder = newValue
         }
+    }
+    
+    // returns the numbers in a 2d array
+    var numbersGrid: [[Int]] {
+        var gridNumbers = Array(repeating: Array(repeating: 0, count: gridDimensions), count: gridDimensions)
+        for column in 0..<gridDimensions {
+            for row in 0..<gridDimensions {
+                let oneDimIndex = convertCoordToIndex(column, row, gridDimensions)
+                gridNumbers[column][row] = self.numbers[oneDimIndex]
+            }
+        }
+        return gridNumbers
     }
     /// This is used to signitiy in the data array of numbers that this box is the empty one. Making the array compatible with nil values would be too complicated.
     let numberToSignifyEmpty = 100
@@ -239,7 +253,7 @@ class ViewController: UIViewController {
         updateBoardData(self.numbers, self.missingBoxCoords.0, self.missingBoxCoords.1)
         if checkWin() {
             let alert = UIAlertController(title: "YOU WIN!", message: "Congratulations!", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "No Thanks", style: .default, handler: nil))
             alert.addAction(UIAlertAction(title: "Play Again?", style: .default) { _ in
                 self.generateBoardData()
                 self.updateBoard()
@@ -274,6 +288,13 @@ class ViewController: UIViewController {
         UserDefaults.standard.emptyBoxXCoord = emptyBoxXCoord
         UserDefaults.standard.emptyBoxYCoord = emptyBoxYCoord
         UserDefaults.standard.numberOrder = numbers
+        
+        let sol = Solvability(gridDimensions)
+        let solvable = sol.isSolvable(numbersGrid)
+        print("solvable: \(solvable)")
+        if !solvable {
+            generateBoardData()
+        }
     }
     
     func updateBoard() {

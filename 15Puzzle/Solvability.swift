@@ -1,67 +1,78 @@
-////
-////  Solvability.swift
-////  15Puzzle
-////
-////  Created by Brandon Fong on 1/6/21.
-////
 //
-//import Foundation
+//  Solvability.swift
+//  15Puzzle
 //
-//class Solvability {
-//    var gridDimensions = 4
-//    var puzzle: [[Int]]
-//    init(_ puzzle: [[Int]]) {
-//        self.puzzle = puzzle
-//    }
+//  Created by Brandon Fong on 1/6/21.
 //
-//    // A utility function to count inversions in given
-//    // array 'arr[]'. Note that this function can be
-//    // optimized to work in O(n Log n) time. The idea
-//    // here is to keep code small and simple.
-//    func getInvCount(_ arr: [Int]) -> Int {
-//        let n = gridDimensions
-//        var inversionCount = 0
-//        for j in 0..<(n * n - 1) {
-//            for i in j..<(n * n - 1) {
-//                // count pairs(i, j) such that i appears
-//                // before j, but i > j.
-//                if arr[i] > arr[j] {
-//                    inversionCount += 1
-//                }
-//            }
-//        }
-//        return inversionCount
-//    }
-//
+
+import Foundation
+
+class Solvability {
+    var gridDimensions = 4
+    
+    init(_ gridDimensions: Int) {
+        self.gridDimensions = gridDimensions
+    }
+    
+    // A utility function to count inversions in given
+    // array 'arr[]'. Note that this function can be
+    // optimized to work in O(n Log n) time. The idea
+    // here is to keep code small and simple.
+    private func getInvCount(_ arr: [Int]) -> Int {
+        let n = gridDimensions
+        var inversionCount = 0
+        for i in 0..<(n * n - 1) {
+            for j in i + 1..<(n * n) {
+                // count pairs(i, j) such that i appears
+                // before j, but i > j.
+                if arr[i] != 100, arr[j] != 100, arr[i] > arr[j] {
+//                    print("\(arr[i]) is greater than \(arr[j])")
+                    inversionCount += 1
+                }
+            }
+        }
+        print("inversion count: \(inversionCount)")
+        return inversionCount
+    }
+     
 //    // find Position of blank from bottom
-//    func findXPosition(int puzzle[N][N]) -> Int {
-//        // start from bottom-right corner of matrix
-//        for (int i = N - 1; i >= 0; i--)
-//            for (int j = N - 1; j >= 0; j--)
-//                if (puzzle[i][j] == 0)
-//                    return N - i;
-//    }
-//
-//    // This function returns true if given
-//    // instance of N*N - 1 puzzle is solvable
-//    bool isSolvable(int puzzle[N][N])
-//    {
-//        // Count inversions in given puzzle
-//        int invCount = getInvCount((int*)puzzle);
-//
-//        // If grid is odd, return true if inversion
-//        // count is even.
-//        if (N & 1)
-//            return !(invCount & 1);
-//
-//        else     // grid is even
-//        {
-//            int pos = findXPosition(puzzle);
-//            if (pos & 1)
-//                return !(invCount & 1);
-//            else
-//                return invCount & 1;
-//        }
-//    }
-//
-//}
+    /// Returns -1 if there is no blank
+    private func findXPositionOfBlank(_ puzzle: [[Int]]) -> Int {
+        let n = gridDimensions
+        // start from bottom-right corner of matrix
+        for i in stride(from: n - 1, through: 0, by: -1) {
+            for j in stride(from: n - 1, through: 0, by: -1) {
+                if puzzle[i][j] == 100 {
+                    print("blank is on row \(n - i) from the bottom")
+                    return n - i
+                }
+            }
+        }
+        // if no blank spot is found
+        return -1
+    }
+
+    // This function returns true if given
+    // instance of N*N - 1 puzzle is solvable
+    func isSolvable(_ puzzle: [[Int]]) -> Bool {
+        let n = gridDimensions
+        // Count inversions in given puzzle
+        let invCount = getInvCount(Array(puzzle.joined()))
+
+        // If grid is odd, return true if inversion
+        // count is even.
+        if (n % 2 != 0) {
+            return invCount % 2 == 0
+        }
+        
+        else { // grid is even
+            let pos = findXPositionOfBlank(puzzle)
+            if pos % 2 == 0 {
+                return invCount % 2 == 1
+            }
+            else {
+                return invCount % 2 == 0
+            }
+        }
+    }
+}
